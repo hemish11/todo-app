@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>274901596027-ug6iig451i3t5g1cr6qd6tr0gdasc7un.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.274901596027-ug6iig451i3t5g1cr6qd6tr0gdasc7un</string>
+	<key>API_KEY</key>
+	<string>AIzaSyCfmXPHX57j9-kMJI9di3mePsSlWcOZwD4</string>
+	<key>GCM_SENDER_ID</key>
+	<string>274901596027</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.hemish.todoApp</string>
+	<key>PROJECT_ID</key>
+	<string>todo-app-hemish-pancholi</string>
+	<key>STORAGE_BUCKET</key>
+	<string>todo-app-hemish-pancholi.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:274901596027:ios:cb90f42a0b9055ffe82fde</string>
+	<key>DATABASE_URL</key>
+	<string>https://todo-app-hemish-pancholi.firebaseio.com</string>
+</dict>
+</plist>
