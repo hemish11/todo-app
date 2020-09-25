@@ -3,8 +3,12 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:neumorphic/neumorphic.dart';
 import 'package:todo_app/colors.dart';
 import 'package:todo_app/screens/background.dart';
+import 'package:todo_app/screens/sign_in_page/components/clickable_text.dart';
+import 'package:todo_app/screens/sign_in_page/components/neumorphic_button.dart';
 import 'package:todo_app/screens/sign_in_page/components/neumorphic_text_field.dart';
 import 'package:todo_app/screens/sign_in_page/components/text.dart';
+import 'package:todo_app/screens/sign_up_page/sign_up_page.dart';
+import 'package:todo_app/screens/todo_list_page/todo_list_page.dart';
 
 class SignInPage extends StatelessWidget {
   @override
@@ -19,17 +23,47 @@ class SignInPage extends StatelessWidget {
             const SizedBox(height: 30),
             CustomText(text: 'Sign In'),
             const Spacer(),
-            NeumorphicTextField(
-              width: size.width - 30,
-              hintText: 'Email Id',
-              isPassword: false,
+            Center(
+              child: NeumorphicTextField(
+                width: size.width - 40,
+                hintText: 'Email id',
+                isPassword: false,
+                onChanged: (value) => print(value),
+              ),
             ),
-            NeumorphicTextField(
-              width: size.width - 30,
-              hintText: 'Password',
-              isPassword: true,
+            Center(
+              child: NeumorphicTextField(
+                width: size.width - 40,
+                hintText: 'Password',
+                isPassword: true,
+                onChanged: (value) => print(value),
+              ),
             ),
             const Spacer(flex: 3),
+            Center(
+              child: ClickableText(
+                text: 'Dont have an account? Create one',
+                onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => SignUpPage(),
+                  ),
+                ),
+              ),
+            ),
+            const Spacer(),
+            Center(
+              child: NeumorphicButton(
+                width: size.width - 60,
+                onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => TodoListPage(),
+                  ),
+                ),
+              ),
+            ),
+            const Spacer(),
           ],
         ),
       ),

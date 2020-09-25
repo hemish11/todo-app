@@ -17,13 +17,40 @@ class Background extends StatelessWidget {
       height: size.height,
       width: size.width,
       color: CustomColors.kLight,
-      child: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Row(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 30.0),
+        child: Stack(
+          children: [
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: SingleChildScrollView(
+                physics: BouncingScrollPhysics(),
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: size.height * 0.15 - 30,
+                    ),
+                    SizedBox(height: size.height * 0.85 - 30, child: child),
+                  ],
+                ),
+              ),
+            ),
+            Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    CustomColors.kLight,
+                    CustomColors.kLight.withAlpha(0),
+                  ],
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  stops: [0.2, 0.5],
+                ),
+              ),
+              height: size.height * 0.3,
+              alignment: Alignment.topCenter,
+              padding: EdgeInsets.only(top: 15),
+              child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   NeuText(
@@ -35,28 +62,40 @@ class Background extends StatelessWidget {
                       color: CustomColors.kLight,
                     ),
                   ),
-                  NeuButton(
-                    onPressed: () {
-                      print('press');
-                    },
+                  NeuCard(
                     decoration: NeumorphicDecoration(
                       color: CustomColors.kLight,
-                      shape: BoxShape.circle,
+                      borderRadius: BorderRadius.circular(30),
                     ),
-                    child: Transform.rotate(
-                      angle: math.pi / 6,
-                      child: Icon(
-                        Icons.brightness_3,
-                        color: CustomColors.kLightAccent,
-                        size: 30,
+                    height: 60,
+                    width: 60,
+                    bevel: 20,
+                    curveType: CurveType.flat,
+                    alignment: Alignment.center,
+                    child: Material(
+                      color: CustomColors.kTransparent,
+                      child: InkWell(
+                        onTap: () {},
+                        borderRadius: BorderRadius.circular(30),
+                        child: Transform.rotate(
+                          angle: math.pi / 6,
+                          child: SizedBox(
+                            height: 60,
+                            width: 60,
+                            child: Icon(
+                              Icons.brightness_3,
+                              color: CustomColors.kLightAccent,
+                              size: 30,
+                            ),
+                          ),
+                        ),
                       ),
                     ),
-                  )
+                  ),
                 ],
               ),
-              Expanded(child: child)
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

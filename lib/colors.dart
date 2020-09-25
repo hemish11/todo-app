@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 class CustomColors {
+  static Color get kTransparent => const Color(0x00000000);
   static Color get kLight => const Color(0xFFF8F2F2);
   static Color get kLightAccent => const Color(0xFFF29A18);
   static Color get kDark => const Color(0xFF1E2433);
