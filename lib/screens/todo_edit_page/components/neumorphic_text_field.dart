@@ -1,16 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:neumorphic/neumorphic.dart';
-import 'package:todo_app/colors.dart';
-import 'package:todo_app/models/theme.dart';
 
 class NeumorphicTextField extends StatelessWidget {
   final double width;
   final String hintText;
   final bool isPassword;
   final ValueChanged<String> onChanged;
+  final TextEditingController controller;
 
-  const NeumorphicTextField({Key key, @required this.width, @required this.hintText, this.isPassword, this.onChanged})
+  const NeumorphicTextField({Key key, @required this.width, @required this.hintText, this.isPassword, this.onChanged, this.controller})
       : super(key: key);
 
   @override
@@ -28,6 +26,7 @@ class NeumorphicTextField extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
             child: TextField(
+              controller: controller,
               decoration: InputDecoration(
                 border: InputBorder.none,
                 hintText: hintText,

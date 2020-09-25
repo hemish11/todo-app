@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:neumorphic/neumorphic.dart';
 import 'package:todo_app/colors.dart';
-import 'package:todo_app/models/theme.dart';
 
 class TodoTile extends StatelessWidget {
   final String title;

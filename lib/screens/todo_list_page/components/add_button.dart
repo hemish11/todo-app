@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:neumorphic/neumorphic.dart';
 import 'package:todo_app/colors.dart';
+import 'package:todo_app/screens/todo_edit_page/todo_edit_page.dart';
 
 class AddButton extends StatelessWidget {
   @override
@@ -40,7 +41,12 @@ class AddButton extends StatelessWidget {
               height: 60,
               width: size.width - 100,
               child: InkWell(
-                onTap: () {},
+                onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => TodoEditPage(),
+                  ),
+                ),
                 borderRadius: BorderRadius.circular(30),
                 child: Center(
                   child: Row(

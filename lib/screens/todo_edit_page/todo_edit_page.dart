@@ -1,14 +1,44 @@
 import 'package:flutter/material.dart';
-import 'package:todo_app/screens/background.dart';
+import 'package:todo_app/components/background.dart';
 import 'package:todo_app/screens/todo_edit_page/components/neumorphic_button.dart';
 import 'package:todo_app/screens/todo_edit_page/components/neumorphic_text_field.dart';
 import 'package:todo_app/screens/todo_edit_page/components/text.dart';
+import 'package:todo_app/services/cloud_firestore.dart';
+import 'package:todo_app/services/firebase_auth.dart';
 
-class TodoEditPage extends StatelessWidget {
+class TodoEditPage extends StatefulWidget {
   final String title;
   final String description;
+  final int index;
 
-  const TodoEditPage({Key key, this.title, this.description}) : super(key: key);
+  const TodoEditPage({Key key, this.title, this.description, this.index}) : super(key: key);
+
+  @override
+  _TodoEditPageState createState() => _TodoEditPageState();
+}
+
+class _TodoEditPageState extends State<TodoEditPage> {
+  TextEditingController _titleController;
+  TextEditingController _descriptionController;
+
+  String _title = '';
+  String _description = '';
+
+  @override
+  void initState() {
+    _titleController = TextEditingController(text: widget.title ?? '');
+    _descriptionController = TextEditingController(text: widget.description ?? '');
+
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _titleController.dispose();
+    _descriptionController.dispose();
+
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -20,32 +50,61 @@ class TodoEditPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(height: 30),
-            CustomText(text: title == null ? 'Add Todo' : 'Edit Todo'),
+            CustomText(text: widget.title == null ? 'Add Todo' : 'Edit Todo'),
             const SizedBox(height: 20),
             Center(
               child: NeumorphicTextField(
+                controller: _titleController,
                 width: size.width - 40,
                 hintText: 'Title',
                 isPassword: false,
-                onChanged: (value) => print(value),
+                onChanged: (value) => _title = value,
               ),
             ),
             Center(
               child: NeumorphicTextField(
+                controller: _descriptionController,
                 width: size.width - 40,
                 hintText: 'Description',
-                isPassword: true,
-                onChanged: (value) => print(value),
+                isPassword: false,
+                onChanged: (value) => _description = value,
               ),
             ),
-            const Spacer(flex: 3),
+            if (widget.title != null) const Spacer(flex: 3) else const Spacer(flex: 4),
             Center(
               child: NeumorphicButton(
                 width: size.width - 60,
-                add: title == null ? true : false,
-                onTap: () {},
+                add: widget.title == null ? true : false,
+                text: widget.title == null ? 'Add' : 'Save',
+                onTap: () {
+                  if (widget.title == null)
+                    CloudFirestore.addTodo(
+                      _title,
+                      _description,
+                      FbaseAuth.getUser().email,
+                    ).then((value) => Navigator.pop(context));
+                  else
+                    CloudFirestore.editTodo(_title, _description, FbaseAuth.getUser().email, widget.index)
+                        .then((value) => Navigator.pop(context));
+                },
               ),
             ),
+            const SizedBox(height: 30),
+            if (widget.title != null)
+              Center(
+                child: NeumorphicButton(
+                  width: size.width - 60,
+                  add: widget.title == null ? true : false,
+                  text: 'Delete',
+                  onTap: () {
+                    CloudFirestore.deleteTodo(
+                      widget.title,
+                      widget.description,
+                      FbaseAuth.getUser().email,
+                    ).then((value) => Navigator.pop(context));
+                  },
+                ),
+              ),
             const SizedBox(height: 30)
           ],
         ),

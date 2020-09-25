@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:neumorphic/neumorphic.dart';
 import 'package:todo_app/colors.dart';
-import 'package:todo_app/models/theme.dart';
 
 class NeumorphicButton extends StatelessWidget {
   final double width;
   final GestureTapCallback onTap;
   final bool add;
+  final String text;
 
-  const NeumorphicButton({Key key, @required this.width, @required this.onTap, @required this.add}) : super(key: key);
+  const NeumorphicButton({Key key, @required this.width, @required this.onTap, @required this.add, @required this.text})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +30,7 @@ class NeumorphicButton extends StatelessWidget {
           child: InkWell(
             onTap: onTap,
             child: Center(
-              child: Text(add ? 'Add' : 'Save', style: Theme.of(context).textTheme.headline3),
+              child: Text(text, style: Theme.of(context).textTheme.headline3),
             ),
           ),
         ),

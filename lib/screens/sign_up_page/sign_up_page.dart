@@ -1,10 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:todo_app/screens/background.dart';
+import 'package:todo_app/components/background.dart';
 import 'package:todo_app/screens/sign_up_page/components/neumorphic_button.dart';
 import 'package:todo_app/screens/sign_up_page/components/neumorphic_text_field.dart';
 import 'package:todo_app/screens/sign_up_page/components/text.dart';
+import 'package:todo_app/screens/todo_list_page/todo_list_page.dart';
+import 'package:todo_app/services/firebase_auth.dart';
+import 'package:todo_app/services/show_dialog.dart';
 
-class SignUpPage extends StatelessWidget {
+class SignUpPage extends StatefulWidget {
+  @override
+  _SignUpPageState createState() => _SignUpPageState();
+}
+
+class _SignUpPageState extends State<SignUpPage> {
+  String _email = '';
+  String _password1 = '';
+  String _password2 = '';
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -22,7 +34,7 @@ class SignUpPage extends StatelessWidget {
                 width: size.width - 40,
                 hintText: 'Email Id',
                 isPassword: false,
-                onChanged: (value) => print(value),
+                onChanged: (value) => _email = value,
               ),
             ),
             Center(
@@ -30,7 +42,7 @@ class SignUpPage extends StatelessWidget {
                 width: size.width - 40,
                 hintText: 'Enter Password',
                 isPassword: true,
-                onChanged: (value) => print(value),
+                onChanged: (value) => _password1 = value,
               ),
             ),
             Center(
@@ -38,14 +50,38 @@ class SignUpPage extends StatelessWidget {
                 width: size.width - 40,
                 hintText: 'Re-enter Password',
                 isPassword: true,
-                onChanged: (value) => print(value),
+                onChanged: (value) => _password2 = value,
               ),
             ),
             const Spacer(flex: 3),
             Center(
               child: NeumorphicButton(
                 width: size.width - 60,
-                onTap: () {},
+                onTap: () async {
+                  if (_password1.length >= 6 && _password2.length >= 6) {
+                    try {
+                      await FbaseAuth.createNewUser(_email, _password1);
+
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => TodoListPage(),
+                        ),
+                      );
+                    } catch (e) {
+                      showAlertDialog(
+                        context: context,
+                        title: 'Error',
+                        content: 'Something went wrong or accont with same email id exists.',
+                      );
+                    }
+                  } else
+                    showAlertDialog(
+                      context: context,
+                      title: 'Error',
+                      content: 'Your password is too short.',
+                    );
+                },
               ),
             ),
             const Spacer(),
