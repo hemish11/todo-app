@@ -1,4 +1,3 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:todo_app/screens/background.dart';
 import 'package:todo_app/screens/todo_edit_page/components/neumorphic_button.dart';
@@ -21,7 +20,7 @@ class TodoEditPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(height: 30),
-            CustomText(text: 'Edit Todo'),
+            CustomText(text: title == null ? 'Add Todo' : 'Edit Todo'),
             const SizedBox(height: 20),
             Center(
               child: NeumorphicTextField(

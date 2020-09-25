@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:neumorphic/neumorphic.dart';
 import 'package:todo_app/colors.dart';
+import 'package:todo_app/models/theme.dart';
 
 class NeumorphicTextField extends StatelessWidget {
   final double width;
@@ -21,7 +22,7 @@ class NeumorphicTextField extends StatelessWidget {
         child: NeuCard(
           decoration: NeumorphicDecoration(
             borderRadius: BorderRadius.circular(50),
-            color: CustomColors.kLight,
+            color: Theme.of(context).backgroundColor,
           ),
           curveType: CurveType.emboss,
           child: Padding(
@@ -30,10 +31,11 @@ class NeumorphicTextField extends StatelessWidget {
               decoration: InputDecoration(
                 border: InputBorder.none,
                 hintText: hintText,
-                fillColor: CustomColors.kLight,
+                hintStyle: Theme.of(context).textTheme.bodyText1,
+                fillColor: Theme.of(context).backgroundColor,
               ),
               obscureText: isPassword,
-              style: GoogleFonts.lato(fontSize: 20),
+              style: Theme.of(context).textTheme.bodyText1,
               onChanged: onChanged,
             ),
           ),

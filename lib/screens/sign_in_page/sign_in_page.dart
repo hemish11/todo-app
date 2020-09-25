@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:neumorphic/neumorphic.dart';
-import 'package:todo_app/colors.dart';
 import 'package:todo_app/screens/background.dart';
 import 'package:todo_app/screens/sign_in_page/components/clickable_text.dart';
 import 'package:todo_app/screens/sign_in_page/components/neumorphic_button.dart';

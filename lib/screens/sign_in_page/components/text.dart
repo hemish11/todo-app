@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:todo_app/colors.dart';
+import 'package:todo_app/models/theme.dart';
 
 class CustomText extends StatelessWidget {
   final String text;
@@ -13,11 +14,7 @@ class CustomText extends StatelessWidget {
       padding: const EdgeInsets.only(left: 20.0),
       child: Text(
         text,
-        style: GoogleFonts.lato(
-          fontSize: 35,
-          fontWeight: FontWeight.w500,
-          color: CustomColors.kDark,
-        ),
+        style: Theme.of(context).textTheme.headline2,
       ),
     );
   }

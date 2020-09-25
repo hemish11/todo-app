@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:neumorphic/neumorphic.dart';
 import 'package:todo_app/colors.dart';
+import 'package:todo_app/models/theme.dart';
 
 class TodoTile extends StatelessWidget {
   final String title;
@@ -19,7 +20,7 @@ class TodoTile extends StatelessWidget {
       width: size.width - 30,
       margin: const EdgeInsets.all(15.0),
       decoration: NeumorphicDecoration(
-        color: CustomColors.kLight,
+        color: Theme.of(context).backgroundColor,
         borderRadius: BorderRadius.circular(size.height * 0.05),
       ),
       curveType: CurveType.flat,
@@ -38,12 +39,12 @@ class TodoTile extends StatelessWidget {
               children: [
                 Text(
                   title,
-                  style: GoogleFonts.lato(fontSize: 20),
+                  style: Theme.of(context).textTheme.bodyText1,
                   overflow: TextOverflow.ellipsis,
                 ),
                 Text(
                   description,
-                  style: GoogleFonts.lato(fontSize: 16),
+                  style: Theme.of(context).textTheme.subtitle1,
                   overflow: TextOverflow.ellipsis,
                 ),
               ],

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:todo_app/colors.dart';
+import 'package:todo_app/models/theme.dart';
 
 class ClickableText extends StatelessWidget {
   final String text;
@@ -19,11 +20,7 @@ class ClickableText extends StatelessWidget {
           padding: const EdgeInsets.all(10.0),
           child: Text(
             text,
-            style: GoogleFonts.lato(
-              fontSize: 18,
-              fontWeight: FontWeight.w500,
-              color: CustomColors.kDark,
-            ),
+            style: Theme.of(context).textTheme.bodyText2,
           ),
         ),
       ),
