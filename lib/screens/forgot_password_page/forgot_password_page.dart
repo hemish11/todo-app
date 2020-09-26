@@ -4,6 +4,7 @@ import 'package:todo_app/screens/forgot_password_page/components/neumorphic_butt
 import 'package:todo_app/screens/forgot_password_page/components/neumorphic_text_field.dart';
 import 'package:todo_app/screens/forgot_password_page/components/text.dart';
 import 'package:todo_app/services/firebase_auth.dart';
+import 'package:todo_app/services/show_dialog.dart';
 
 class ForgotPasswordPage extends StatefulWidget {
   @override
@@ -37,7 +38,17 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
             Center(
               child: NeumorphicButton(
                 width: size.width - 60,
-                onTap: () async => FbaseAuth.forgotPassword(_email).then((value) => Navigator.pop(context)),
+                onTap: () async {
+                  try {
+                    FbaseAuth.forgotPassword(_email).then((value) => Navigator.pop(context));
+                  } catch (e) {
+                    showAlertDialog(
+                      context: context,
+                      title: 'Error',
+                      content: 'Something went wrong, please check your email id',
+                    );
+                  }
+                },
               ),
             ),
             const Spacer(),

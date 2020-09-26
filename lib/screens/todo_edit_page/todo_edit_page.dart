@@ -5,6 +5,7 @@ import 'package:todo_app/screens/todo_edit_page/components/neumorphic_text_field
 import 'package:todo_app/screens/todo_edit_page/components/text.dart';
 import 'package:todo_app/services/cloud_firestore.dart';
 import 'package:todo_app/services/firebase_auth.dart';
+import 'package:todo_app/services/show_dialog.dart';
 
 class TodoEditPage extends StatefulWidget {
   final String title;
@@ -21,13 +22,16 @@ class _TodoEditPageState extends State<TodoEditPage> {
   TextEditingController _titleController;
   TextEditingController _descriptionController;
 
-  String _title = '';
-  String _description = '';
+  String _title;
+  String _description;
 
   @override
   void initState() {
     _titleController = TextEditingController(text: widget.title ?? '');
     _descriptionController = TextEditingController(text: widget.description ?? '');
+
+    _title = widget.title ?? '';
+    _description = widget.description ?? '';
 
     super.initState();
   }
@@ -78,11 +82,14 @@ class _TodoEditPageState extends State<TodoEditPage> {
                 text: widget.title == null ? 'Add' : 'Save',
                 onTap: () {
                   if (widget.title == null)
-                    CloudFirestore.addTodo(
-                      _title,
-                      _description,
-                      FbaseAuth.getUser().email,
-                    ).then((value) => Navigator.pop(context));
+                    _title == '' || _description == ''
+                        ? showAlertDialog(
+                            context: context, title: 'Error', content: 'Title or Description should not be empty')
+                        : CloudFirestore.addTodo(
+                            _title,
+                            _description,
+                            FbaseAuth.getUser().email,
+                          ).then((value) => Navigator.pop(context));
                   else
                     CloudFirestore.editTodo(_title, _description, FbaseAuth.getUser().email, widget.index)
                         .then((value) => Navigator.pop(context));
