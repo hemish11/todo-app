@@ -16,6 +16,19 @@ class SignInPage extends StatefulWidget {
   _SignInPageState createState() => _SignInPageState();
 }
 
+/// RFC 5322–style email regex (simplified for common addresses).
+final RegExp _emailRegExp = RegExp(
+  r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$',
+);
+
+/// Returns null if valid, or an error message if invalid.
+String? _validateSignIn(String email, String password) {
+  if (email.isEmpty) return 'Please enter your email.';
+  if (!_emailRegExp.hasMatch(email)) return 'Please enter a valid email address.';
+  if (password.isEmpty) return 'Please enter your password.';
+  return null;
+}
+
 class _SignInPageState extends State<SignInPage> {
   String _email = '';
   String _password = '';
@@ -94,6 +107,15 @@ class _SignInPageState extends State<SignInPage> {
               child: NeumorphicButton(
                 width: size.width - 60,
                 onTap: () async {
+                  final validationError = _validateSignIn(_email, _password);
+                  if (validationError != null) {
+                    showAlertDialog(
+                      context: context,
+                      title: 'Invalid input',
+                      content: validationError,
+                    );
+                    return;
+                  }
                   try {
                     await FbaseAuth.signIn(_email, _password);
 
