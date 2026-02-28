@@ -1,4 +1,3 @@
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:todo_app/components/background.dart';
 import 'package:todo_app/screens/forgot_password_page/forgot_password_page.dart';
@@ -32,22 +31,20 @@ String? _validateSignIn(String email, String password) {
 class _SignInPageState extends State<SignInPage> {
   String _email = '';
   String _password = '';
+  bool _isLoading = false;
 
   @override
   void initState() {
-    Firebase.initializeApp().then(
-      (value) {
-        if (FbaseAuth.getUser() != null)
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => TodoListPage(),
-            ),
-          );
-      },
-    );
-
     super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (FbaseAuth.getUser() != null)
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => TodoListPage(),
+          ),
+        );
+    });
   }
 
   @override
@@ -104,36 +101,47 @@ class _SignInPageState extends State<SignInPage> {
             ),
             const Spacer(),
             Center(
-              child: NeumorphicButton(
-                width: size.width - 60,
-                onTap: () async {
-                  final validationError = _validateSignIn(_email, _password);
-                  if (validationError != null) {
-                    showAlertDialog(
-                      context: context,
-                      title: 'Invalid input',
-                      content: validationError,
-                    );
-                    return;
-                  }
-                  try {
-                    await FbaseAuth.signIn(_email, _password);
-
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => TodoListPage(),
-                      ),
-                    );
-                  } catch (e) {
-                    showAlertDialog(
-                      context: context,
-                      title: 'Error',
-                      content: 'Your Email or password is wrong',
-                    );
-                  }
-                },
-              ),
+              child: _isLoading
+                  ? SizedBox(
+                      width: size.width - 60,
+                      height: 80,
+                      child: const Center(child: CircularProgressIndicator()),
+                    )
+                  : NeumorphicButton(
+                      width: size.width - 60,
+                      onTap: () async {
+                        final validationError = _validateSignIn(_email, _password);
+                        if (validationError != null) {
+                          showAlertDialog(
+                            context: context,
+                            title: 'Invalid input',
+                            content: validationError,
+                          );
+                          return;
+                        }
+                        try {
+                          setState(() => _isLoading = true);
+                          await FbaseAuth.signIn(_email, _password);
+                          if (!mounted) return;
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => TodoListPage(),
+                            ),
+                          );
+                        } catch (e) {
+                          if (mounted) {
+                            showAlertDialog(
+                              context: context,
+                              title: 'Error',
+                              content: 'Your Email or password is wrong',
+                            );
+                          }
+                        } finally {
+                          if (mounted) setState(() => _isLoading = false);
+                        }
+                      },
+                    ),
             ),
             const Spacer(),
           ],

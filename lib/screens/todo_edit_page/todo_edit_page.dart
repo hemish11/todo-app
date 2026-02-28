@@ -3,6 +3,7 @@ import 'package:todo_app/components/background.dart';
 import 'package:todo_app/screens/todo_edit_page/components/neumorphic_button.dart';
 import 'package:todo_app/screens/todo_edit_page/components/neumorphic_text_field.dart';
 import 'package:todo_app/screens/todo_edit_page/components/text.dart';
+import 'package:todo_app/services/app_exceptions.dart';
 import 'package:todo_app/services/cloud_firestore.dart';
 import 'package:todo_app/services/firebase_auth.dart';
 import 'package:todo_app/services/show_dialog.dart';
@@ -80,19 +81,44 @@ class _TodoEditPageState extends State<TodoEditPage> {
                 width: size.width - 60,
                 add: widget.title == null ? true : false,
                 text: widget.title == null ? 'Add' : 'Save',
-                onTap: () {
-                  if (widget.title == null)
-                    _title == '' || _description == ''
-                        ? showAlertDialog(
-                            context: context, title: 'Error', content: 'Title or Description should not be empty')
-                        : CloudFirestore.addTodo(
-                            _title,
-                            _description,
-                            FbaseAuth.getUser().email,
-                          ).then((value) => Navigator.pop(context));
-                  else
-                    CloudFirestore.editTodo(_title, _description, FbaseAuth.getUser().email, widget.index)
-                        .then((value) => Navigator.pop(context));
+                onTap: () async {
+                  if (widget.title == null) {
+                    if (_title == '' || _description == '') {
+                      showAlertDialog(
+                          context: context, title: 'Error', content: 'Title or Description should not be empty');
+                      return;
+                    }
+                    try {
+                      await CloudFirestore.addTodo(
+                        _title,
+                        _description,
+                        FbaseAuth.getUser().email,
+                      );
+                      if (mounted) Navigator.pop(context);
+                    } catch (e) {
+                      if (!mounted) return;
+                      final msg = e is NetworkException
+                          ? 'Check your internet connection'
+                          : e is DataSyncException
+                              ? e.message
+                              : 'Could not save; try again';
+                      showAlertDialog(context: context, title: 'Error', content: msg);
+                    }
+                  } else {
+                    try {
+                      await CloudFirestore.editTodo(
+                          _title, _description, FbaseAuth.getUser().email, widget.index);
+                      if (mounted) Navigator.pop(context);
+                    } catch (e) {
+                      if (!mounted) return;
+                      final msg = e is NetworkException
+                          ? 'Check your internet connection'
+                          : e is DataSyncException
+                              ? e.message
+                              : 'Could not save; try again';
+                      showAlertDialog(context: context, title: 'Error', content: msg);
+                    }
+                  }
                 },
               ),
             ),
@@ -103,12 +129,23 @@ class _TodoEditPageState extends State<TodoEditPage> {
                   width: size.width - 60,
                   add: widget.title == null ? true : false,
                   text: 'Delete',
-                  onTap: () {
-                    CloudFirestore.deleteTodo(
-                      widget.title,
-                      widget.description,
-                      FbaseAuth.getUser().email,
-                    ).then((value) => Navigator.pop(context));
+                  onTap: () async {
+                    try {
+                      await CloudFirestore.deleteTodo(
+                        widget.title,
+                        widget.description,
+                        FbaseAuth.getUser().email,
+                      );
+                      if (mounted) Navigator.pop(context);
+                    } catch (e) {
+                      if (!mounted) return;
+                      final msg = e is NetworkException
+                          ? 'Check your internet connection'
+                          : e is DataSyncException
+                              ? e.message
+                              : 'Could not delete; try again';
+                      showAlertDialog(context: context, title: 'Error', content: msg);
+                    }
                   },
                 ),
               ),

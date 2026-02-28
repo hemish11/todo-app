@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:neumorphic/neumorphic.dart';
+import 'package:todo_app/colors.dart';
 import 'package:todo_app/screens/todo_list_page/components/sign_out_button.dart';
 
 class Background extends StatelessWidget {
@@ -11,11 +12,24 @@ class Background extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    final backgroundColor = Theme.of(context).backgroundColor;
 
     return Container(
       height: size.height,
       width: size.width,
-      color: Theme.of(context).backgroundColor,
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [
+            backgroundColor,
+            backgroundColor,
+            CustomColors.kTransparent,
+            backgroundColor,
+          ],
+          stops: const [0.0, 0.2, 0.5, 1.0],
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+        ),
+      ),
       child: Padding(
         padding: const EdgeInsets.only(left: 15.0, right: 15.0, top: 30.0),
         child: Stack(
@@ -37,23 +51,12 @@ class Background extends StatelessWidget {
             IgnorePointer(
               ignoring: true,
               child: Container(
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [
-                      Theme.of(context).backgroundColor,
-                      Theme.of(context).backgroundColor.withAlpha(0),
-                    ],
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    stops: [0.2, 0.5],
-                  ),
-                ),
                 height: size.height * 0.3,
                 alignment: Alignment.topCenter,
-                padding: EdgeInsets.only(top: 15),
+                padding: const EdgeInsets.only(top: 15),
                 child: NeuText(
                   'ToDo',
-                  parentColor: Theme.of(context).backgroundColor,
+                  parentColor: backgroundColor,
                   style: Theme.of(context).textTheme.headline1,
                 ),
               ),

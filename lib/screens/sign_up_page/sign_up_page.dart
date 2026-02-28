@@ -16,6 +16,7 @@ class _SignUpPageState extends State<SignUpPage> {
   String _email = '';
   String _password1 = '';
   String _password2 = '';
+  bool _isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -55,34 +56,46 @@ class _SignUpPageState extends State<SignUpPage> {
             ),
             const Spacer(flex: 3),
             Center(
-              child: NeumorphicButton(
-                width: size.width - 60,
-                onTap: () async {
-                  if (_password1.length >= 6 && _password2.length >= 6) {
-                    try {
-                      await FbaseAuth.createNewUser(_email, _password1);
-
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => TodoListPage(),
-                        ),
-                      );
-                    } catch (e) {
-                      showAlertDialog(
-                        context: context,
-                        title: 'Error',
-                        content: 'Something went wrong or accont with same email id exists.',
-                      );
-                    }
-                  } else
-                    showAlertDialog(
-                      context: context,
-                      title: 'Error',
-                      content: 'Your password is too short.',
-                    );
-                },
-              ),
+              child: _isLoading
+                  ? SizedBox(
+                      width: size.width - 60,
+                      height: 80,
+                      child: const Center(child: CircularProgressIndicator()),
+                    )
+                  : NeumorphicButton(
+                      width: size.width - 60,
+                      onTap: () async {
+                        if (_password1.length >= 6 && _password2.length >= 6) {
+                          try {
+                            setState(() => _isLoading = true);
+                            await FbaseAuth.createNewUser(_email, _password1);
+                            if (!mounted) return;
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => TodoListPage(),
+                              ),
+                            );
+                          } catch (e) {
+                            if (mounted) {
+                              showAlertDialog(
+                                context: context,
+                                title: 'Error',
+                                content: 'Something went wrong or accont with same email id exists.',
+                              );
+                            }
+                          } finally {
+                            if (mounted) setState(() => _isLoading = false);
+                          }
+                        } else {
+                          showAlertDialog(
+                            context: context,
+                            title: 'Error',
+                            content: 'Your password is too short.',
+                          );
+                        }
+                      },
+                    ),
             ),
             const Spacer(),
           ],
