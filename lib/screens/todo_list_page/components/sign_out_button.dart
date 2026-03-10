@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:neumorphic/neumorphic.dart';
 import 'package:todo_app/colors.dart';
 import 'package:todo_app/services/firebase_auth.dart';
+import 'package:todo_app/services/show_dialog.dart';
 
 class SignOutButton extends StatelessWidget {
   @override
@@ -19,7 +20,18 @@ class SignOutButton extends StatelessWidget {
         child: Material(
           color: CustomColors.kTransparent,
           child: InkWell(
-            onTap: () => FbaseAuth.signOut().then((value) => Navigator.pop(context)),
+            onTap: () async {
+              try {
+                await FbaseAuth.signOut();
+                Navigator.pop(context);
+              } catch (e) {
+                showAlertDialog(
+                  context: context,
+                  title: 'Error',
+                  content: 'Sign out failed. Please try again.',
+                );
+              }
+            },
             child: SizedBox(
               height: 70,
               width: 70,

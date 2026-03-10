@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:neumorphic/neumorphic.dart';
 import 'package:todo_app/colors.dart';
 import 'package:todo_app/screens/todo_edit_page/todo_edit_page.dart';
+import 'package:todo_app/services/show_dialog.dart';
 
 class AddButton extends StatelessWidget {
   @override
@@ -41,12 +42,22 @@ class AddButton extends StatelessWidget {
               height: 60,
               width: size.width - 100,
               child: InkWell(
-                onTap: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => TodoEditPage(),
-                  ),
-                ),
+                onTap: () async {
+                  try {
+                    await Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => TodoEditPage(),
+                      ),
+                    );
+                  } catch (e) {
+                    showAlertDialog(
+                      context: context,
+                      title: 'Error',
+                      content: 'Unable to open the add todo page. Please try again.',
+                    );
+                  }
+                },
                 borderRadius: BorderRadius.circular(30),
                 child: Center(
                   child: Row(

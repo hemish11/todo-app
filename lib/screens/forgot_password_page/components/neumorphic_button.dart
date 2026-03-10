@@ -28,7 +28,7 @@ class NeumorphicButton extends StatelessWidget {
             onTap: onTap,
             child: Center(
               child: Text(
-                'Sign In',
+                'Send Reset Link',
                 style: Theme.of(context).textTheme.headline3,
               ),
             ),

@@ -66,6 +66,14 @@ class _SignUpPageState extends State<SignUpPage> {
                       width: size.width - 60,
                       onTap: () async {
                         if (_password1.length >= 6 && _password2.length >= 6) {
+                          if (_password1 != _password2) {
+                            showAlertDialog(
+                              context: context,
+                              title: 'Error',
+                              content: 'Passwords do not match.',
+                            );
+                            return;
+                          }
                           try {
                             setState(() => _isLoading = true);
                             await FbaseAuth.createNewUser(_email, _password1);
