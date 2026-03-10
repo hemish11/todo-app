@@ -4,9 +4,10 @@ import 'package:todo_app/colors.dart';
 
 class NeumorphicButton extends StatelessWidget {
   final double width;
+  final String text;
   final GestureTapCallback onTap;
 
-  const NeumorphicButton({Key key, @required this.width, @required this.onTap}) : super(key: key);
+  const NeumorphicButton({Key key, @required this.width, @required this.text, @required this.onTap}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +29,7 @@ class NeumorphicButton extends StatelessWidget {
             onTap: onTap,
             child: Center(
               child: Text(
-                'Sign In',
+                text,
                 style: Theme.of(context).textTheme.headline3,
               ),
             ),

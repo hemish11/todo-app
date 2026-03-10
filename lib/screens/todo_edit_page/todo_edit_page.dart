@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:todo_app/components/background.dart';
 import 'package:todo_app/screens/todo_edit_page/components/neumorphic_button.dart';
 import 'package:todo_app/screens/todo_edit_page/components/neumorphic_text_field.dart';
-import 'package:todo_app/screens/todo_edit_page/components/text.dart';
+import 'package:todo_app/components/custom_text.dart';
 import 'package:todo_app/services/app_exceptions.dart';
 import 'package:todo_app/services/cloud_firestore.dart';
 import 'package:todo_app/services/firebase_auth.dart';
@@ -55,7 +55,10 @@ class _TodoEditPageState extends State<TodoEditPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(height: 30),
-            CustomText(text: widget.title == null ? 'Add Todo' : 'Edit Todo'),
+            CustomText(
+              text: widget.title == null ? 'Add Todo' : 'Edit Todo',
+              padding: const EdgeInsets.only(left: 10.0),
+            ),
             const SizedBox(height: 20),
             Center(
               child: NeumorphicTextField(
@@ -83,16 +86,18 @@ class _TodoEditPageState extends State<TodoEditPage> {
                 text: widget.title == null ? 'Add' : 'Save',
                 onTap: () async {
                   if (widget.title == null) {
-                    if (_title == '' || _description == '') {
+                    final titleTrimmed = _title?.trim() ?? '';
+                    final descTrimmed = _description?.trim() ?? '';
+                    if (titleTrimmed.isEmpty || descTrimmed.isEmpty) {
                       showAlertDialog(
                           context: context, title: 'Error', content: 'Title or Description should not be empty');
                       return;
                     }
                     try {
                       await CloudFirestore.addTodo(
-                        _title,
-                        _description,
-                        FbaseAuth.getUser().email,
+                        titleTrimmed,
+                        descTrimmed,
+                        FbaseAuth.getUser().uid,
                       );
                       if (mounted) Navigator.pop(context);
                     } catch (e) {
@@ -105,9 +110,16 @@ class _TodoEditPageState extends State<TodoEditPage> {
                       showAlertDialog(context: context, title: 'Error', content: msg);
                     }
                   } else {
+                    final titleTrimmed = _title?.trim() ?? '';
+                    final descTrimmed = _description?.trim() ?? '';
+                    if (titleTrimmed.isEmpty || descTrimmed.isEmpty) {
+                      showAlertDialog(
+                          context: context, title: 'Error', content: 'Title or Description should not be empty');
+                      return;
+                    }
                     try {
                       await CloudFirestore.editTodo(
-                          _title, _description, FbaseAuth.getUser().email, widget.index);
+                          titleTrimmed, descTrimmed, FbaseAuth.getUser().uid, widget.index);
                       if (mounted) Navigator.pop(context);
                     } catch (e) {
                       if (!mounted) return;
@@ -134,7 +146,7 @@ class _TodoEditPageState extends State<TodoEditPage> {
                       await CloudFirestore.deleteTodo(
                         widget.title,
                         widget.description,
-                        FbaseAuth.getUser().email,
+                        FbaseAuth.getUser().uid,
                       );
                       if (mounted) Navigator.pop(context);
                     } catch (e) {

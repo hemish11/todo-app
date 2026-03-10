@@ -7,7 +7,7 @@ class FbaseAuth {
   static Future<void> createNewUser(String email, String password) async {
     User user = (await instance.createUserWithEmailAndPassword(email: email, password: password)).user;
 
-    CloudFirestore.addUser(user.email);
+    await CloudFirestore.addUser(user.uid);
   }
 
   static Future<void> signIn(String email, String password) async {

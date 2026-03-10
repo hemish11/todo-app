@@ -4,7 +4,7 @@ import 'package:todo_app/screens/forgot_password_page/forgot_password_page.dart'
 import 'package:todo_app/screens/sign_in_page/components/clickable_text.dart';
 import 'package:todo_app/screens/sign_in_page/components/neumorphic_button.dart';
 import 'package:todo_app/screens/sign_in_page/components/neumorphic_text_field.dart';
-import 'package:todo_app/screens/sign_in_page/components/text.dart';
+import 'package:todo_app/components/custom_text.dart';
 import 'package:todo_app/screens/sign_up_page/sign_up_page.dart';
 import 'package:todo_app/screens/todo_list_page/todo_list_page.dart';
 import 'package:todo_app/services/firebase_auth.dart';
@@ -109,6 +109,7 @@ class _SignInPageState extends State<SignInPage> {
                     )
                   : NeumorphicButton(
                       width: size.width - 60,
+                      text: 'Sign In',
                       onTap: () async {
                         final validationError = _validateSignIn(_email, _password);
                         if (validationError != null) {

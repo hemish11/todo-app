@@ -1,9 +1,8 @@
-// This is a basic Flutter widget test.
+// Widget tests for the Todo App.
 //
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility that Flutter provides. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
+// To run: flutter test test/widget_test.dart
+// Note: MyApp uses SignInPage as home. Firebase is not mocked here; ensure
+// Firebase is initialized in test environment if SignInPage callbacks depend on it.
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -11,20 +10,17 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:todo_app/main.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
+  testWidgets('Sign In page renders and shows Sign In title', (WidgetTester tester) async {
     await tester.pumpWidget(MyApp());
-
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
-
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
     await tester.pump();
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+    expect(find.text('Sign In'), findsOneWidget);
+  });
+
+  testWidgets('Sign Up link is visible on Sign In page', (WidgetTester tester) async {
+    await tester.pumpWidget(MyApp());
+    await tester.pump();
+
+    expect(find.text('Dont have an account? Create one'), findsOneWidget);
   });
 }

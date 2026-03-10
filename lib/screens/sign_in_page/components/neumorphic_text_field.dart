@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:neumorphic/neumorphic.dart';
 
 class NeumorphicTextField extends StatelessWidget {
@@ -31,7 +32,9 @@ class NeumorphicTextField extends StatelessWidget {
                 hintStyle: Theme.of(context).textTheme.bodyText1,
                 fillColor: Theme.of(context).backgroundColor,
               ),
-              obscureText: isPassword,
+              obscureText: isPassword == true,
+              autocorrect: !(isPassword == true),
+              autofillHints: isPassword == true ? [AutofillHints.none] : null,
               style: Theme.of(context).textTheme.bodyText1,
               onChanged: onChanged,
             ),

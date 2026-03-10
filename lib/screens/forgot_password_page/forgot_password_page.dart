@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:todo_app/components/background.dart';
 import 'package:todo_app/screens/forgot_password_page/components/neumorphic_button.dart';
 import 'package:todo_app/screens/forgot_password_page/components/neumorphic_text_field.dart';
-import 'package:todo_app/screens/forgot_password_page/components/text.dart';
+import 'package:todo_app/components/custom_text.dart';
 import 'package:todo_app/services/firebase_auth.dart';
 import 'package:todo_app/services/show_dialog.dart';
 
@@ -56,6 +56,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                     )
                   : NeumorphicButton(
                       width: size.width - 60,
+                      text: 'Send Reset Link',
                       onTap: () async {
                         try {
                           setState(() => _isLoading = true);
